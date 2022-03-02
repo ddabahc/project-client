@@ -5,9 +5,10 @@ import { toast } from "react-toastify";
 
 const Register = () => {
   const [email, setEmail] = useState("");
-
+  // console.log(".env", process.env.REACT_APP_REGISTER_REDIRECT_URL);
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const actionCodeSettings = {
       url: process.env.REACT_APP_REGISTER_REDIRECT_URL,
       handleCodeInApp: true,
@@ -20,7 +21,7 @@ const Register = () => {
     toast.success(
       `Email is sent to ${email}. Click the link to complete your registration 🍻`
     );
-
+    window.localStorage.setItem("emailForRegistration", email);
     setEmail("");
   };
 
@@ -35,7 +36,7 @@ const Register = () => {
           autoFocus
         />
 
-        <button className="btn btn-outline-primary" type="submit">
+        <button type="submit" className="btn btn-outline-primary">
           Register
         </button>
       </form>
