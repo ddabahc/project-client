@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import { auth } from "../../firebase";
 import { sendSignInLinkToEmail } from "firebase/auth";
 import { toast } from "react-toastify";
+import firebase from "firebase/compat/app";
+import { useNavigate } from "react-router-dom";
 
 const RegisterComplete = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     setEmail(window.localStorage.getItem("emailForRegistration"));
@@ -16,13 +19,34 @@ const RegisterComplete = ({ history }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // validation
+    if (!email || !password) {
+      toast.error("You must provide an email and password");
+      return;
+    }
+    if (password.length < 6) {
+      toast.error("Password must be 6 characters long");
+      return;
+    }
+
     try {
       const result = await auth.signInWithEmailLink(
         email,
         window.location.href
       );
       console.log("RESULT", result);
+
       if (result.user.emailVerified) {
+        // remove item from localStorage
+        window.localStorage.removeItem("emailForRegistration");
+        // get id token
+        let user = auth.currentUser;
+        await user.updatePassword();
+        const idTokenResult = await user.getIdTokenResult();
+        // redux store
+        console.log("user", user, "token", idTokenResult);
+        // redirect
+        navigate("/");
       }
     } catch (error) {
       console.log(error);

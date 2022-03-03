@@ -1,6 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { createStore } from "redux";
+import { provider } from "react-redux";
+import { composeWithDevTool } from "redux-devtools-extension";
 
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
