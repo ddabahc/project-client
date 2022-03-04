@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth } from "../../firebase";
+import { useSelector } from "react-redux";
 import { sendSignInLinkToEmail } from "firebase/auth";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   // console.log(".env", process.env.REACT_APP_REGISTER_REDIRECT_URL);
+  const { user } = useSelector((state) => ({ ...state }));
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user && user.token) navigate("/");
+  }, [user]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -33,9 +42,10 @@ const Register = () => {
           className="form-control"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          placeholder="Your Email"
           autoFocus
         />
-
+        <br />
         <button type="submit" className="btn btn-outline-primary">
           Register
         </button>
