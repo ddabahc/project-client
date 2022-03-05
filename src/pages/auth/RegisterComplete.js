@@ -4,12 +4,16 @@ import { sendSignInLinkToEmail } from "firebase/auth";
 import { toast } from "react-toastify";
 import firebase from "firebase/compat/app";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { createOrUpdateUser } from "../../functions/auth";
 
 const RegisterComplete = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  const { user } = useSelector((state) => ({ ...state }));
+  let dispatch = useDispatch();
   useEffect(() => {
     setEmail(window.localStorage.getItem("emailForRegistration"));
     // console.log(window.location.href);
@@ -45,6 +49,22 @@ const RegisterComplete = ({ history }) => {
         const idTokenResult = await user.getIdTokenResult();
         // redux store
         console.log("user", user, "token", idTokenResult);
+
+        createOrUpdateUser(idTokenResult.token)
+          .then((res) => {
+            dispatch({
+              type: "LOGGED_IN_USER",
+              payload: {
+                name: res.data.name,
+                email: res.data.email,
+                token: idTokenResult.token,
+                role: res.data.role,
+                _id: res.data._id,
+              },
+            });
+          })
+          .catch((err) => console.log(err));
+
         // redirect
         navigate("/");
       }
