@@ -10,7 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import firebase from "firebase/compat/app";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const { SubMenu, Item } = Menu;
 
@@ -20,7 +20,7 @@ const Header = () => {
   let dispatch = useDispatch();
   let { user } = useSelector((state) => ({ ...state }));
 
-  let navigate = useNavigate();
+  let history = useHistory();
 
   const handleClick = (e) => {
     // console.log(e.key);
@@ -33,7 +33,7 @@ const Header = () => {
       type: "LOGOUT",
       payload: null,
     });
-    navigate("/login");
+    history.push("/login");
   };
 
   return (

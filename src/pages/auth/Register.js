@@ -3,17 +3,15 @@ import { auth } from "../../firebase";
 import { useSelector } from "react-redux";
 import { sendSignInLinkToEmail } from "firebase/auth";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
-const Register = () => {
+const Register = ({ history }) => {
   const [email, setEmail] = useState("");
   // console.log(".env", process.env.REACT_APP_REGISTER_REDIRECT_URL);
   const { user } = useSelector((state) => ({ ...state }));
-  const navigate = useNavigate();
 
   useEffect(() => {
-    if (user && user.token) navigate("/");
-  }, [user]);
+    if (user && user.token) history.push("/");
+  }, [user, history]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
