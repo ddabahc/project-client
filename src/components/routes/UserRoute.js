@@ -1,14 +1,12 @@
 import React from "react";
+import { Route } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Navigate, Outlet } from "react-router-dom";
+import LoadingToRedirect from "./LoadingToRedirect";
 
-export const UserRoute = ({ children }) => {
+const UserRoute = ({ children, ...rest }) => {
   const { user } = useSelector((state) => ({ ...state }));
-  return user && user.token ? (
-    <Outlet />
-  ) : (
-    <h1 className="text-dagner">Unauthorized Page... </h1>
-  );
+
+  return user && user.token ? <Route {...rest} /> : <LoadingToRedirect />;
 };
 
 export default UserRoute;

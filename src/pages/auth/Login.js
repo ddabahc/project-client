@@ -4,30 +4,29 @@ import { toast } from "react-toastify";
 import { Button } from "antd";
 import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { createOrUpdateUser } from "../../functions/auth";
 import { async } from "@firebase/util";
 import { Redirect } from "react-router-dom";
 
-const Login = ({}) => {
+const Login = ({ history }) => {
   const [email, setEmail] = useState("daniel@damarket.com.mx");
   const [password, setPassword] = useState("123456");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
-    if (user && user.token) navigate("/");
-  }, [user]);
+    if (user && user.token) history.push("/");
+  }, [user, history]);
 
   let dispatch = useDispatch();
 
   const roleBasedRedirect = (res) => {
     if (res.data.role === "admin") {
-      navigate("/admin/dashboard");
+      history.push("/admin/dashboard");
     } else {
-      navigate("/user/history");
+      history.push("/user/history");
     }
   };
 
@@ -57,7 +56,7 @@ const Login = ({}) => {
         })
         .catch((err) => console.log(err));
 
-      navigate("/");
+      history.push("/");
     } catch (error) {
       console.log(error);
       toast.error(error.message);

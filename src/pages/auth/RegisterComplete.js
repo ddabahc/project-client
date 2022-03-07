@@ -3,14 +3,12 @@ import { auth } from "../../firebase";
 import { sendSignInLinkToEmail } from "firebase/auth";
 import { toast } from "react-toastify";
 import firebase from "firebase/compat/app";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createOrUpdateUser } from "../../functions/auth";
 
 const RegisterComplete = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
 
   const { user } = useSelector((state) => ({ ...state }));
   let dispatch = useDispatch();
@@ -18,7 +16,7 @@ const RegisterComplete = ({ history }) => {
     setEmail(window.localStorage.getItem("emailForRegistration"));
     // console.log(window.location.href);
     // console.log(window.localStorage.getItem("emailForRegistration"));
-  }, []);
+  }, [history]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,7 +64,7 @@ const RegisterComplete = ({ history }) => {
           .catch((err) => console.log(err));
 
         // redirect
-        navigate("/");
+        history.push("/");
       }
     } catch (error) {
       console.log(error);

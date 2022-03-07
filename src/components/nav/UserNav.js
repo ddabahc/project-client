@@ -15,7 +15,7 @@ const UserNav = () => (
         </Link>
       </li>
       <li className="nav-item">
-        <Link to="/user/history" className="nav-item">
+        <Link to="/user/wishlist" className="nav-item">
           WISHLIST
         </Link>
       </li>

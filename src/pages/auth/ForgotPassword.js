@@ -2,18 +2,17 @@ import React, { useState, useEffect } from "react";
 import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const ForgotPassword = () => {
-  const navigate = useNavigate();
+const ForgotPassword = ({ history }) => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
-    if (user && user.token) navigate("/");
-  }, [user]);
+    if (user && user.token) history.push("/");
+  }, [user, history]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
