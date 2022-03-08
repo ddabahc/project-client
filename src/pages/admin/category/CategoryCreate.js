@@ -9,6 +9,8 @@ import {
 } from "../../../functions/category";
 import { Link } from "react-router-dom";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import CategoryForm from "../../../components/forms/CategoryForm";
+import LocalSearch from "../../../components/forms/LocalSearch";
 
 const CategoryCreate = () => {
   const { user } = useSelector((state) => ({ ...state }));
@@ -16,6 +18,8 @@ const CategoryCreate = () => {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
+  // searching filtering
+  const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
     loadCategories();
@@ -61,24 +65,7 @@ const CategoryCreate = () => {
     }
   };
 
-  const categoryForm = () => (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label>Name</label>
-        <input
-          type="text"
-          className="form-control"
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-          autoFocus
-          placeholder="category name"
-          required
-        />
-        <br />
-        <button className="btn btn-primary">Submit</button>
-      </div>
-    </form>
-  );
+  const searched = (keyword) => (c) => c.name.toLowerCase().includes(keyword);
 
   return (
     <div className="container-fluid">
@@ -92,9 +79,15 @@ const CategoryCreate = () => {
           ) : (
             <h4>Create Category</h4>
           )}
-          {categoryForm()}
-          <hr />
-          {categories.map((c) => (
+          <CategoryForm
+            handleSubmit={handleSubmit}
+            name={name}
+            setName={setName}
+          />
+
+          <LocalSearch keyword={keyword} setKeyword={setKeyword} />
+
+          {categories.filter(searched(keyword)).map((c) => (
             <div className="alert alert-primary" key={c.id}>
               {c.name}
               <span
