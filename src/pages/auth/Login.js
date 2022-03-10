@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { auth, googleAuthProvider } from "../../firebase";
+import { auth, googleAuthProvider, facebookAuthProvider } from "../../firebase";
 import { toast } from "react-toastify";
 import { Button } from "antd";
-import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
+import {
+  MailOutlined,
+  GoogleOutlined,
+  FacebookOutlined,
+} from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { createOrUpdateUser } from "../../functions/auth";
@@ -62,6 +66,35 @@ const Login = ({ history }) => {
       toast.error(error.message);
       setLoading(false);
     }
+  };
+
+  const authFacebookLogin = (async) => {
+    auth
+      .signInWithPopup(facebookAuthProvider)
+      .then(async (result) => {
+        const { user } = result;
+        const idTokenResult = await user.getIdTokenResult();
+        createOrUpdateUser(idTokenResult.token)
+          .then((res) => {
+            dispatch({
+              type: "LOGGED_IN_USER",
+              payload: {
+                name: res.data.name,
+                email: res.data.email,
+                token: idTokenResult.token,
+                role: res.data.role,
+                _id: res.data._id,
+              },
+            });
+            roleBasedRedirect(res);
+          })
+          .catch((err) => console.log(err));
+        // navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.message);
+      });
   };
 
   const googleLogin = async () => {
@@ -153,6 +186,18 @@ const Login = ({ history }) => {
             size="large"
           >
             Login with Google
+          </Button>
+
+          <Button
+            onClick={authFacebookLogin}
+            className="mb-3 
+            btn btn-primary btn-lg active"
+            block
+            shape="round"
+            icon={<FacebookOutlined />}
+            size="large"
+          >
+            Login with Facebook
           </Button>
 
           <Link to="/forgot/password" className="text-danger float-end">

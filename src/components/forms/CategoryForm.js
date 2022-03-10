@@ -10,7 +10,7 @@ const CategoryForm = ({ handleSubmit, name, setName }) => (
         onChange={(e) => setName(e.target.value)}
         value={name}
         autoFocus
-        placeholder="category name"
+        placeholder=""
         required
       />
       <br />
