@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import AdminNav from "../../components/nav/AdminNav";
 
 const AdminDashboard = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
-
   return (
     <div className="container-fluid">
       <div className="row">
@@ -13,7 +10,7 @@ const AdminDashboard = () => {
         </div>
 
         <div className="col">
-          <h4>Admin Dashboard </h4>
+          <h4>Admin Dashboard</h4>
         </div>
       </div>
     </div>

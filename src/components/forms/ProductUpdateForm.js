@@ -6,13 +6,13 @@ const { Option } = Select;
 const ProductUpdateForm = ({
   handleSubmit,
   handleChange,
-  handleCategoryChange,
   setValues,
   values,
+  handleCategoryChange,
   categories,
   subOptions,
   arrayOfSubs,
-  setArrayOfSubIds,
+  setArrayOfSubs,
   selectedCategory,
 }) => {
   // destructure
@@ -122,13 +122,13 @@ const ProductUpdateForm = ({
       </div>
 
       <div>
-        <label>Sub Category</label>
+        <label>Sub Categories</label>
         <Select
           mode="multiple"
           style={{ width: "100%" }}
-          placeholder="Select"
+          placeholder="Please select"
           value={arrayOfSubs}
-          onChange={(value) => setArrayOfSubIds(value)}
+          onChange={(value) => setArrayOfSubs(value)}
         >
           {subOptions.length &&
             subOptions.map((s) => (
