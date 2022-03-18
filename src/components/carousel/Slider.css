@@ -4,4 +4,5 @@
   margin-bottom: -150px;
   mask-image: linear-gradient(to bottom, rgba(0, 0, 1));
   opacity: 0.6;
+  height: 500px;
 }
