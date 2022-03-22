@@ -60,7 +60,7 @@ const Login = ({ history }) => {
         })
         .catch((err) => console.log(err));
 
-      history.push("/");
+      // history.push("/");
     } catch (error) {
       console.log(error);
       toast.error(error.message);
