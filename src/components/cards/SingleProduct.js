@@ -11,6 +11,9 @@ import RatingModal from "../modal/RatingModal";
 import { showAverage } from "../../functions/rating";
 import _ from "lodash";
 import { useSelector, useDispatch } from "react-redux";
+import { addToWishlist } from "../../functions/user";
+import { toast } from "react-toastify";
+import { useHistory } from "react-router-dom";
 
 const { TabPane } = Tabs;
 
@@ -53,6 +56,17 @@ const SingleProduct = ({ product, onStarClick, star }) => {
     }
   };
 
+  let history = useHistory();
+
+  const handleAddtoWishlist = (e) => {
+    e.preventDefault();
+    addToWishlist(product._id, user.token).then((res) => {
+      // console.log("ADDED TO WISH LIST", res.data);
+      toast.success("Added to wish list");
+      history.push("/user/wishlist");
+    });
+  };
+
   return (
     <>
       <div className="col-md-7">
@@ -91,9 +105,9 @@ const SingleProduct = ({ product, onStarClick, star }) => {
                 Cart
               </a>
             </Tooltip>,
-            <Link to="/">
+            <a onClick={handleAddtoWishlist}>
               <HeartOutlined className="text-info" /> <br /> Add to Wishlist
-            </Link>,
+            </a>,
             <RatingModal>
               <StarRating
                 name={_id}
